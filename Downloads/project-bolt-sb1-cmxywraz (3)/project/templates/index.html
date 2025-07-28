@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WesBank EV Savings Calculator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <a href="#" class="logo">
+                <img src="{{ url_for('static', filename='images/wesbank-logo.svg') }}" alt="WesBank Logo">
+            </a>
+            <div class="header-right">
+                <div class="search-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </div>
+                <button class="menu-toggle">
+                    <span>MENU</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <nav class="navigation">
+        <ul class="container">
+            <li class="nav-item"><a href="#" class="active">New to finance?</a></li>
+            <li class="nav-item"><a href="#" class="active">Calculate</a></li>
+            <li class="nav-item"><a href="#">Apply</a></li>
+            <li class="nav-item"><a href="#">Sign iContract</a></li>
+            <li class="nav-item"><a href="#">Manage account</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Electric Vehicle Savings Calculator</h1>
+                <p class="subtitle">Calculate your estimated savings when switching to an electric vehicle</p>
+            </div>
+        </section>
+
+        <section class="calculator container">
+            <div class="calculator-grid">
+                <div class="input-section">
+                    <h2>Your Information</h2>
+                    
+                    <div class="input-group">
+                        <label for="vehicle-price">ICE Vehicle Purchase Price</label>
+                        <div class="input-with-icon">
+                            <span class="currency-symbol">R</span>
+                            <input type="text" id="vehicle-price" value="800000.00" class="price-input">
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="distance">Monthly Distance (km)</label>
+                        <div class="range-container">
+                            <input type="range" id="distance" min="100" max="5000" value="1500" class="slider">
+                            <div class="range-value"><span id="distance-value">1,500</span> km</div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="fuel-type">Fuel Type</label>
+                        <select id="fuel-type" class="select-input">
+                            <option value="petrol95">Petrol 95</option>
+                            <option value="petrol93">Petrol 93</option>
+                            <option value="diesel">Diesel</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="ebucks-level">eBucks Reward Level</label>
+                        <div class="range-container">
+                            <input type="range" id="ebucks-level" min="1" max="5" value="3" class="slider">
+                            <div class="range-value">Level <span id="ebucks-level-value">3</span></div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="payment-term">Loan Term (months)</label>
+                        <div class="range-container">
+                            <input type="range" id="payment-term" min="12" max="72" step="12" value="60" class="slider">
+                            <div class="range-value"><span id="payment-term-value">60</span></div>
+                        </div>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="has-insurance" checked>
+                            <label for="has-insurance">WesBank Insurance</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="has-financing" checked>
+                            <label for="has-financing">WesBank Financing</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="has-solar">
+                            <label for="has-solar">Home Solar Power</label>
+                        </div>
+                    </div>
+
+                    <button id="calculate-btn" class="primary-button">CALCULATE SAVINGS</button>
+                </div>
+
+                <div class="results-section">
+                    <h2>Your EV Savings</h2>
+                    
+                    <div class="result-card total-savings">
+                        <h3>Total Estimated Savings</h3>
+                        <div class="result-amount" id="total-savings">R<span>0.00</span></div>
+                        <div class="result-period">over 5 years</div>
+                    </div>
+                    
+                    <div class="savings-breakdown">
+                        <div class="result-card">
+                            <h3>Upfront Savings</h3>
+                            <div class="result-amount" id="upfront-savings">R<span>0.00</span></div>
+                            <div class="savings-details">
+                                <div class="savings-item">
+                                    <span class="savings-label">eBucks Benefits:</span>
+                                    <span class="savings-value" id="ebucks-savings">R0.00</span>
+                                </div>
+                                <div class="savings-item">
+                                    <span class="savings-label">Carbon Tax Savings:</span>
+                                    <span class="savings-value" id="carbon-savings">R0.00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="result-card">
+                            <h3>Loan Term Savings</h3>
+                            <div class="result-amount" id="term-savings">R<span>0.00</span></div>
+                            <div class="savings-details">
+                                <div class="savings-item">
+                                    <span class="savings-label">Fuel Spend Savings:</span>
+                                    <span class="savings-value" id="fuel-savings">R0.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="savings-chart"></canvas>
+                    </div>
+
+                    <button id="apply-btn" class="primary-button">APPLY FOR EV FINANCING</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="app-promo container">
+            <div class="app-promo-content">
+                <div class="app-image">
+                    <img src="{{ url_for('static', filename='images/wesbank-app.png') }}" alt="WesBank App">
+                </div>
+                <div class="app-text">
+                    <h2>#GetMoving with the WesBank App</h2>
+                    <p>Check your affordability. Get approved. Personalise your deal. Sign your contract.</p>
+                    <div class="app-buttons">
+                        <a href="#" class="app-button">
+                            <img src="{{ url_for('static', filename='images/google-play.png') }}" alt="Google Play">
+                        </a>
+                        <a href="#" class="app-button">
+                            <img src="{{ url_for('static', filename='images/app-store.png') }}" alt="App Store">
+                        </a>
+                        <a href="#" class="app-button">
+                            <img src="{{ url_for('static', filename='images/app-gallery.png') }}" alt="App Gallery">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 WesBank, a division of FirstRand Bank Limited. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/calculator.js') }}"></script>
+</body>
+</html>
