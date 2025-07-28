@@ -1,5 +1,5 @@
 [build]
-  base = "./project"
+  base = "Downloads/project-bolt-sb1-cmxywraz (3)/project"
   command = "npm run build"
   publish = "dist"
 
